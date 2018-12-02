@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.xml.ws.http.HTTPException;
 
 @RestController
 @ControllerAdvice
@@ -40,7 +41,8 @@ public class UserController {
     @ApiResponses(
             value = {
                     @ApiResponse(code = 200, message = "Ok"),
-                    @ApiResponse(code = 400, message = "Bad Request")
+                    @ApiResponse(code = 400, message = "Bad Request"),
+                    @ApiResponse(code = 404, message = "Not Found")
             }
     )
     @RequestMapping(value = "/user", method = RequestMethod.GET)
@@ -50,8 +52,16 @@ public class UserController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public HttpEntity handleBadException(MethodArgumentNotValidException objException)
+    public HttpEntity handleBadException(MethodArgumentNotValidException ex)
     {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HTTPException.class)
+    public HttpEntity handleNotFoundException(HTTPException ex){
+        if (ex.getStatusCode() == 404){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
