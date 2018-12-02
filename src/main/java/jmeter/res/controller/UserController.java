@@ -1,4 +1,7 @@
 package jmeter.res.controller;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import jmeter.entity.UserEntity;
 import jmeter.res.dto.UserDTO;
 import jmeter.res.dto.UserIdDTO;
@@ -16,9 +19,17 @@ import javax.validation.constraints.NotNull;
 @RestController
 @ControllerAdvice
 public class UserController {
+
     @Autowired
     UserService userService;
 
+    @ApiOperation(value = "Save user in database")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "Ok"),
+                    @ApiResponse(code = 400, message = "Bad Request")
+            }
+    )
     @RequestMapping(value= "/user",method = RequestMethod.POST)
     public HttpEntity<UserIdDTO> userRegistration(@Valid @RequestBody UserDTO userDTO){
         Integer userId = userService.saveUser(userDTO);
@@ -26,6 +37,12 @@ public class UserController {
         return new ResponseEntity<>(userIdDTO, HttpStatus.OK);
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "Ok"),
+                    @ApiResponse(code = 400, message = "Bad Request")
+            }
+    )
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public HttpEntity<UserEntity> getUser(@Valid @NotNull @RequestParam Integer userId){
         UserEntity userEntity = userService.getUser(userId);
