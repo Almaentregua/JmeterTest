@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @ControllerAdvice
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public HttpEntity<UserEntity> getUser(@Valid @RequestParam Integer userId){
+    public HttpEntity<UserEntity> getUser(@Valid @NotNull @RequestParam Integer userId){
         UserEntity userEntity = userService.getUser(userId);
         return new ResponseEntity<>(userEntity,HttpStatus.OK);
     }
