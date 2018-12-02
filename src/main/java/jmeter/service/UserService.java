@@ -1,7 +1,7 @@
 package jmeter.service;
 
-import jmeter.Entity.UserEntity;
-import jmeter.Repositories.UserRepo;
+import jmeter.entity.UserEntity;
+import jmeter.repository.UserRepo;
 import jmeter.res.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

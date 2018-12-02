@@ -1,4 +1,4 @@
-package jmeter.Entity;
+package jmeter.entity;
 
 import lombok.Getter;
 import lombok.Setter;

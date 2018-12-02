@@ -1,6 +1,7 @@
 package jmeter.res.controller;
-import jmeter.Entity.UserEntity;
+import jmeter.entity.UserEntity;
 import jmeter.res.dto.UserDTO;
+import jmeter.res.dto.UserIdDTO;
 import jmeter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
 import javax.validation.Valid;
 
 @RestController
@@ -19,9 +19,10 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value= "/user",method = RequestMethod.POST)
-    public HttpEntity<Integer> userRegistration(@Valid @RequestBody UserDTO userDTO){
+    public HttpEntity<UserIdDTO> userRegistration(@Valid @RequestBody UserDTO userDTO){
         Integer userId = userService.saveUser(userDTO);
-        return new ResponseEntity<>(userId, HttpStatus.OK);
+        UserIdDTO userIdDTO = new UserIdDTO(userId);
+        return new ResponseEntity<>(userIdDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
